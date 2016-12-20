@@ -23,12 +23,13 @@ def run_reactor(game_inbox, game_outbox):
 
 def run_game_logic(in_queue, out_queue):
     while True:
-        try:
-            data = in_queue.get(block=False)
-            print("Got payload: {}".format(data))
-            in_queue.task_done()
-        except queue.Empty:
-            pass
+        while True:
+            try:
+                data = in_queue.get(block=False)
+                print("Got payload: {}".format(data))
+                in_queue.task_done()
+            except queue.Empty:
+                break;
         out_queue.put("Game message")
         time.sleep(1)
 
